@@ -17,6 +17,9 @@ class Navbar extends HTMLElement {
 
     <nav>
       <div class="links">
+        <div class="logo">
+          <img src="./img/logo.png" alt="Logo" />
+        </div>
         <ul>
           <li><a href="#proyectos">Proyectos</a></li>
           <li><a href="#sobremi">Sobre mí</a></li>

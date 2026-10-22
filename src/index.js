@@ -1,2 +1,2 @@
-import './components/header'
-import './components/navbar'
+import './components/header.js'
+import './components/navbar.js'
