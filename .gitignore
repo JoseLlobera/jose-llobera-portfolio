@@ -27,3 +27,4 @@ dist-ssr
 # Manual write
 
 package-lock.json
+.local-model-reference/

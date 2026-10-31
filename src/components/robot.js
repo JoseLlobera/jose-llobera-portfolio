@@ -1,4 +1,6 @@
 import { PerspectiveCamera, Scene, WebGLRenderer, Color } from 'three'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { add } from 'three/tsl'
 
 class Robot extends HTMLElement {
 
@@ -12,11 +14,14 @@ class Robot extends HTMLElement {
     this.init3D()
   }
 
-  init3D() {
+  async init3D() {
     this.scene = new Scene()
 
     const viewer = this.shadow.querySelector('.eve')
     const aspect = viewer.clientWidth / viewer.clientHeight
+    const loader = new GLTFLoader()
+    const gltf = await loader.loadAsync('/models/portfolio-companion.glb')
+
     this.camera = new PerspectiveCamera(45, aspect, 0.1, 100)
     this.camera.position.z = 3
 
@@ -26,6 +31,8 @@ class Robot extends HTMLElement {
     this.renderer.setSize(viewer.clientWidth, viewer.clientHeight)
     viewer.appendChild(this.renderer.domElement)
     this.renderer.render(this.scene, this.camera)
+    this.model = gltf.scene
+    console.log(this.model)
   }
 
   render() {

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vista previa del personaje</title>
+    <style>
+      body { margin: 0; background: #e8edf3; font-family: Arial, sans-serif; }
+      canvas { display: block; }
+      .caption { position: fixed; left: 24px; bottom: 20px; color: #19333d; }
+    </style>
+  </head>
+  <body>
+    <div class="caption">Prototipo original · gira el personaje con el ratón</div>
+    <script type="module">
+      import {
+        AmbientLight, Color, DirectionalLight, PerspectiveCamera, Scene, WebGLRenderer,
+      } from 'three'
+      import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+      import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+
+      const scene = new Scene()
+      scene.background = new Color('#e8edf3')
+      scene.add(new AmbientLight('#ffffff', 1.3))
+      const sun = new DirectionalLight('#ffffff', 3)
+      sun.position.set(3, 5, 6)
+      scene.add(sun)
+
+      const camera = new PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100)
+      camera.position.set(3, 1.7, 4.5)
+      camera.lookAt(0, 0.25, 0)
+
+      const renderer = new WebGLRenderer({ antialias: true })
+      renderer.setSize(innerWidth, innerHeight)
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
+      document.body.appendChild(renderer.domElement)
+
+      const controls = new OrbitControls(camera, renderer.domElement)
+      controls.target.set(0, 0.25, 0)
+      controls.enableDamping = true
+      controls.update()
+
+      const model = await new GLTFLoader().loadAsync('/models/portfolio-companion.glb')
+      scene.add(model.scene)
+
+      function draw() {
+        controls.update()
+        renderer.render(scene, camera)
+        requestAnimationFrame(draw)
+      }
+      draw()
+
+      addEventListener('resize', () => {
+        camera.aspect = innerWidth / innerHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(innerWidth, innerHeight)
+      })
+    </script>
+  </body>
+</html>
